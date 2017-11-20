@@ -1027,7 +1027,7 @@ AM_CONDITIONAL(HAVE_JSON, [test x$jansson = x1])
 LIBS=$SAVE_LIBS
 
 # check for python & pexpect (used for some testcases only)
-AM_PATH_PYTHON([2.6],, [:])
+AM_PATH_PYTHON([3.5],, [:])
 AM_CONDITIONAL([HAVE_PYTHON], [test "$PYTHON" != :])
 
 # check for gettext
