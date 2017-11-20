@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # This file is part of GNUnet
-# (C) 2013 Christian Grothoff (and other contributing authors)
+# (C) 2013, 2017 Christian Grothoff (and other contributing authors)
 #
 # GNUnet is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published
@@ -37,37 +37,37 @@ def simulate(k, n, verbose):
   largest_arc = int(2**ceil(log(n, 2))) / 2
   num_ghosts = (2 * largest_arc) - n
   if verbose:
-    print "we have", num_ghosts, "ghost peers"
+    print("we have", num_ghosts, "ghost peers")
   # n.b. all peers with idx<k are evil
-  peers = range(n)
-  info = [1 << x for x in xrange(n)]
+  peers = list(range(n))
+  info = [1 << x for x in range(n)]
   def done_p():
-    for x in xrange(k, n):
+    for x in range(k, n):
       if bsc(info[x]) < n-k:
         return False
     return True
   rounds = 0
   while not done_p():
     if verbose:
-      print "-- round --"
+      print("-- round --")
     arc = 1
     while arc <= largest_arc:
       if verbose:
-        print "-- subround --"
+        print("-- subround --")
       new_info = [x for x in info]
-      for peer_physical in xrange(n):
+      for peer_physical in range(n):
         peer_logical = peers[peer_physical]
         peer_type = None
         partner_logical = (peer_logical + arc) % n
         partner_physical = peers.index(partner_logical)
         if peer_physical < k or partner_physical < k:
           if verbose:
-            print "bad peer in connection", peer_physical, "--", partner_physical
+            print("bad peer in connection", peer_physical, "--", partner_physical)
           continue
         if peer_logical & arc == 0:
           # we are outgoing
           if verbose:
-            print peer_physical, "connects to", partner_physical
+            print(peer_physical, "connects to", partner_physical)
           peer_type = "outgoing"
           if peer_logical < num_ghosts:
             # we have a ghost, check if the peer who connects
@@ -80,7 +80,7 @@ def simulate(k, n, verbose):
         else:
           peer_type = "incoming"
         if verbose > 1:
-          print "type of", str(peer_physical) + ":", peer_type
+          print("type of", str(peer_physical) + ":", peer_type)
       info = new_info
       arc = arc << 1;
     rounds = rounds + 1
@@ -96,8 +96,8 @@ if __name__ == "__main__":
 
   args = parser.parse_args()
   sum = 0.0;
-  for n in xrange (0, args.r):
+  for n in range (0, args.r):
     sum += simulate(args.k, args.n, args.verbose)
-  print sum / args.r;
+  print(sum / args.r);
 
 
