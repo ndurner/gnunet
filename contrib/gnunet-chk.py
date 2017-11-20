@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # This file is part of GNUnet.
-# (C) 2013 Christian Grothoff (and other contributing authors)
+# (C) 2013, 2017 Christian Grothoff (and other contributing authors)
 #
 # GNUnet is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published
@@ -27,6 +27,7 @@ import os
 import getopt
 import sys
 from Crypto.Cipher import AES
+from functools import reduce
 
 # Defaults
 DBLOCK_SIZE = (32 * 1024)   # Data block size
@@ -188,6 +189,7 @@ class Chk:
 
     def uri(self):
         sizestr = repr (self.fsize)
+        # 2to3-3.5 suggests this change: if isinstance (self.fsize, int):
         if isinstance (self.fsize, long):
             sizestr = sizestr[:-1]            
         return GNUNET_FS_URI_PREFIX + GNUNET_FS_URI_CHK_INFIX + \
@@ -345,13 +347,13 @@ def chkuri_from_path (path):
 
 def usage ():
     """Prints help about using this script."""
-    print """
+    print("""
 Usage: gnunet-chk.py [options] file
 Prints the Content Hash Key of given file in GNUNET-style URI.
 
 Options:
     -h, --help                : prints this message
-"""
+""")
 
 
 if '__main__' == __name__:
@@ -359,9 +361,9 @@ if '__main__' == __name__:
         opts, args = getopt.getopt(sys.argv[1:], 
                                    "h", 
                                    ["help"])
-    except getopt.GetoptError, err:
-        print err
-        print "Exception occured"
+    except getopt.GetoptError as err:
+        print(err)
+        print("Exception occured")
         usage()
         sys.exit(2)
     for option, value in opts:
@@ -369,7 +371,7 @@ if '__main__' == __name__:
             usage()
             sys.exit(0)
     if len(args) != 1:
-        print "Incorrect number of arguments passed"
+        print("Incorrect number of arguments passed")
         usage()
         sys.exit(1)
-    print chkuri_from_path (args[0])
+    print(chkuri_from_path (args[0]))
