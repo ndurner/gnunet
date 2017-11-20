@@ -1,6 +1,6 @@
 #!@PYTHON@
 #    This file is part of GNUnet.
-#    (C) 2010 Christian Grothoff (and other contributing authors)
+#    (C) 2010, 2017 Christian Grothoff (and other contributing authors)
 #
 #    GNUnet is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published
@@ -23,10 +23,11 @@ import os
 import subprocess
 import re
 import shutil
+import imp
 
 # Force encoding to utf-8, as this test otherwise fails
 # on some systems (see #5094).
-reload(sys)
+imp.reload(sys)
 sys.setdefaultencoding('utf8')
 
 srcdir = "../.."
