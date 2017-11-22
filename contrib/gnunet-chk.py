@@ -193,8 +193,7 @@ class Chk:
 
     def uri(self):
         sizestr = repr(self.fsize)
-        # 2to3-3.5 suggests this change: if isinstance (self.fsize, int):
-        if isinstance(self.fsize, long):
+        if isinstance(self.fsize, int):
             sizestr = sizestr[:-1]
         return GNUNET_FS_URI_PREFIX + GNUNET_FS_URI_CHK_INFIX + \
             encode_data_to_string(bytearray(self.key)) + "." + \
