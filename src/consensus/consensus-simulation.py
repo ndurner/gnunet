@@ -17,9 +17,13 @@
 # Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA 02110-1301, USA.
 
+from __future__ import absolute_import
+from __future__ import print_function
 import argparse
 import random
-from math import ceil,log,floor
+from math import ceil, log, floor
+from six.moves import range
+
 
 def bsc(n):
   """ count the bits set in n"""
@@ -32,6 +36,7 @@ def bsc(n):
     x = x << 1
   return c
 
+
 def simulate(k, n, verbose):
   assert k < n
   largest_arc = int(2**ceil(log(n, 2))) / 2
@@ -41,6 +46,7 @@ def simulate(k, n, verbose):
   # n.b. all peers with idx<k are evil
   peers = list(range(n))
   info = [1 << x for x in range(n)]
+
   def done_p():
     for x in range(k, n):
       if bsc(info[x]) < n-k:
@@ -82,10 +88,11 @@ def simulate(k, n, verbose):
         if verbose > 1:
           print("type of", str(peer_physical) + ":", peer_type)
       info = new_info
-      arc = arc << 1;
+      arc = arc << 1
     rounds = rounds + 1
     random.shuffle(peers)
   return rounds
+
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
@@ -95,9 +102,7 @@ if __name__ == "__main__":
   parser.add_argument('--verbose', '-v', action='count')
 
   args = parser.parse_args()
-  sum = 0.0;
-  for n in range (0, args.r):
+  sum = 0.0
+  for n in range(0, args.r):
     sum += simulate(args.k, args.n, args.verbose)
-  print(sum / args.r);
-
-
+  print(sum / args.r)
