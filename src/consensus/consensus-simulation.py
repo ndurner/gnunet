@@ -26,72 +26,72 @@ from six.moves import range
 
 
 def bsc(n):
-  """ count the bits set in n"""
-  l = n.bit_length()
-  c = 0
-  x = 1
-  for _ in range(0, l):
-    if n & x:
-      c = c + 1
-    x = x << 1
-  return c
+    """ count the bits set in n"""
+    l = n.bit_length()
+    c = 0
+    x = 1
+    for _ in range(0, l):
+        if n & x:
+            c = c + 1
+            x = x << 1
+    return c
 
 
 def simulate(k, n, verbose):
-  assert k < n
-  largest_arc = int(2**ceil(log(n, 2))) / 2
-  num_ghosts = (2 * largest_arc) - n
-  if verbose:
-    print("we have", num_ghosts, "ghost peers")
-  # n.b. all peers with idx<k are evil
-  peers = list(range(n))
-  info = [1 << x for x in range(n)]
-
-  def done_p():
-    for x in range(k, n):
-      if bsc(info[x]) < n-k:
-        return False
-    return True
-  rounds = 0
-  while not done_p():
+    assert k < n
+    largest_arc = int(2**ceil(log(n, 2))) / 2
+    num_ghosts = (2 * largest_arc) - n
     if verbose:
-      print("-- round --")
-    arc = 1
-    while arc <= largest_arc:
-      if verbose:
-        print("-- subround --")
-      new_info = [x for x in info]
-      for peer_physical in range(n):
-        peer_logical = peers[peer_physical]
-        peer_type = None
-        partner_logical = (peer_logical + arc) % n
-        partner_physical = peers.index(partner_logical)
-        if peer_physical < k or partner_physical < k:
-          if verbose:
-            print("bad peer in connection", peer_physical, "--", partner_physical)
-          continue
-        if peer_logical & arc == 0:
-          # we are outgoing
-          if verbose:
-            print(peer_physical, "connects to", partner_physical)
-          peer_type = "outgoing"
-          if peer_logical < num_ghosts:
-            # we have a ghost, check if the peer who connects
-            # to our ghost is actually outgoing
-            ghost_partner_logical = (peer_logical - arc) % n
-            if ghost_partner_logical & arc == 0:
-              peer_type = peer_type + ", ghost incoming"
-          new_info[peer_physical] = new_info[peer_physical] | info[peer_physical] | info[partner_physical]
-          new_info[partner_physical] = new_info[partner_physical] | info[peer_physical] | info[partner_physical]
-        else:
-          peer_type = "incoming"
-        if verbose > 1:
-          print("type of", str(peer_physical) + ":", peer_type)
-      info = new_info
-      arc = arc << 1
-    rounds = rounds + 1
-    random.shuffle(peers)
-  return rounds
+        print("we have", num_ghosts, "ghost peers")
+    # n.b. all peers with idx<k are evil
+    peers = list(range(n))
+    info = [1 << x for x in range(n)]
+
+    def done_p():
+        for x in range(k, n):
+            if bsc(info[x]) < n-k:
+                return False
+        return True
+    rounds = 0
+    while not done_p():
+        if verbose:
+            print("-- round --")
+        arc = 1
+        while arc <= largest_arc:
+            if verbose:
+                print("-- subround --")
+            new_info = [x for x in info]
+            for peer_physical in range(n):
+                peer_logical = peers[peer_physical]
+                peer_type = None
+                partner_logical = (peer_logical + arc) % n
+                partner_physical = peers.index(partner_logical)
+                if peer_physical < k or partner_physical < k:
+                    if verbose:
+                        print("bad peer in connection", peer_physical, "--", partner_physical)
+                    continue
+                if peer_logical & arc == 0:
+                    # we are outgoing
+                    if verbose:
+                        print(peer_physical, "connects to", partner_physical)
+                    peer_type = "outgoing"
+                    if peer_logical < num_ghosts:
+                        # we have a ghost, check if the peer who connects
+                        # to our ghost is actually outgoing
+                        ghost_partner_logical = (peer_logical - arc) % n
+                        if ghost_partner_logical & arc == 0:
+                            peer_type = peer_type + ", ghost incoming"
+                    new_info[peer_physical] = new_info[peer_physical] | info[peer_physical] | info[partner_physical]
+                    new_info[partner_physical] = new_info[partner_physical] | info[peer_physical] | info[partner_physical]
+                else:
+                    peer_type = "incoming"
+                if verbose > 1:
+                    print("type of", str(peer_physical) + ":", peer_type)
+            info = new_info
+            arc = arc << 1
+        rounds = rounds + 1
+        random.shuffle(peers)
+    return rounds
 
 
 if __name__ == "__main__":
