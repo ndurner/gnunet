@@ -55,7 +55,7 @@ def encode_data_to_string(data):
     """
     echart = "0123456789ABCDEFGHIJKLMNOPQRSTUV"
     assert (None != data)
-    assert (bytearray == type(data))
+    assert (isinstance(data, bytearray))
     size = len(data)
     assert (0 != size)
     vbit = 0
