@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 from __future__ import print_function
-from gdb import *
+import dbm.gnu
 
 
 def search_dll(head, field, match, pfield):
