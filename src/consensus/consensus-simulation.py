@@ -95,14 +95,14 @@ def simulate(k, n, verbose):
 
 
 if __name__ == "__main__":
-  parser = argparse.ArgumentParser()
-  parser.add_argument("k", metavar="k", type=int, help="#(bad peers)")
-  parser.add_argument("n", metavar="n", type=int, help="#(all peers)")
-  parser.add_argument("r", metavar="r", type=int, help="#(rounds)")
-  parser.add_argument('--verbose', '-v', action='count')
+    parser = argparse.ArgumentParser()
+    parser.add_argument("k", metavar="k", type=int, help="#(bad peers)")
+    parser.add_argument("n", metavar="n", type=int, help="#(all peers)")
+    parser.add_argument("r", metavar="r", type=int, help="#(rounds)")
+    parser.add_argument('--verbose', '-v', action='count')
 
-  args = parser.parse_args()
-  sum = 0.0
-  for n in range(0, args.r):
-    sum += simulate(args.k, args.n, args.verbose)
-  print(sum / args.r)
+    args = parser.parse_args()
+    sum = 0.0
+    for n in range(0, args.r):
+        sum += simulate(args.k, args.n, args.verbose)
+    print(sum / args.r)
