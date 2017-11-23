@@ -26,8 +26,8 @@ import logging
 import os
 import getopt
 import sys
-from Crypto.Cipher import AES
 from functools import reduce
+from Crypto.Cipher import AES
 
 # Defaults
 DBLOCK_SIZE = (32 * 1024)   # Data block size
@@ -133,7 +133,8 @@ def setup_aes_cipher_(aes_key):
 
 
 def aes_pad_(data):
-    """Adds padding to the data such that the size of the data is a multiple of
+    """
+    Adds padding to the data such that the size of the data is a multiple of
     16 bytes
 
     data: the data string
@@ -284,7 +285,7 @@ def compute_rootchk(readin, size):
     readin: the stream where to read data from
     size: the size of data to be read
     """
-    depth = compute_depth_(size);
+    depth = compute_depth_(size)
     current_depth = 0
     chks = [None] * (depth * CHK_PER_INODE)  # list buffer
     read_offset = 0
