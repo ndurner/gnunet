@@ -8,32 +8,32 @@ debug = False
 
 
 def get_td_from_function_signature(line, file, num):
-  left_paren = line.find('(')
-  if left_paren > 0:
-    left_paren += 1
-    line = line[left_paren:]
-    right_paren = line.find(')')
+    left_paren = line.find('(')
+    if left_paren > 0:
+        left_paren += 1
+        line = line[left_paren:]
+        right_paren = line.find(')')
     if right_paren > 0 and right_paren > left_paren and line[right_paren:].find('(') >= 0:
-      fname = line[:right_paren]
-      fname = fname.lstrip(' ').lstrip('*').lstrip(' ').rstrip(' ')
-      if len(fname) > 0:
+        fname = line[:right_paren]
+        fname = fname.lstrip(' ').lstrip('*').lstrip(' ').rstrip(' ')
+    if len(fname) > 0:
         if debug:
-          print("from {0}:{1}".format(file, num))
-          print("-T {0}".format(fname))
+            print("from {0}:{1}".format(file, num))
+            print("-T {0}".format(fname))
 
 
 def get_td_from_simple_type(line, file, num):
-  line = line.rstrip(' ').rstrip('\t').rstrip(' ').rstrip('\t')
-  right_space = line.rfind(' ')
-  right_tab = line.rfind('\t')
-  sep = right_tab if right_tab > right_space else right_space
-  sep += 1
-  tname = line[sep:]
-  tname = tname.lstrip('*')
-  if len(tname) > 0:
-    if debug:
-      print("from {0}:{1}".format(file, num))
-      print("-T {0}".format(tname))
+    line = line.rstrip(' ').rstrip('\t').rstrip(' ').rstrip('\t')
+    right_space = line.rfind(' ')
+    right_tab = line.rfind('\t')
+    sep = right_tab if right_tab > right_space else right_space
+    sep += 1
+    tname = line[sep:]
+    tname = tname.lstrip('*')
+    if len(tname) > 0:
+        if debug:
+            print("from {0}:{1}".format(file, num))
+            print("-T {0}".format(tname))
 
 
 def find_typedefs(file):
